@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoNanoGUI", "MonoNanoGUI\MonoNanoGUI.csproj", "{53E02625-2FED-40B0-B8E2-2C1B8203320D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoNanoGUIDemo", "MonoNanoGUIDemo\MonoNanoGUIDemo.csproj", "{8E2C0B7E-EE98-4DDD-BFD9-D2D41A2FA6BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53E02625-2FED-40B0-B8E2-2C1B8203320D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E02625-2FED-40B0-B8E2-2C1B8203320D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E02625-2FED-40B0-B8E2-2C1B8203320D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E02625-2FED-40B0-B8E2-2C1B8203320D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E2C0B7E-EE98-4DDD-BFD9-D2D41A2FA6BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E2C0B7E-EE98-4DDD-BFD9-D2D41A2FA6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E2C0B7E-EE98-4DDD-BFD9-D2D41A2FA6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E2C0B7E-EE98-4DDD-BFD9-D2D41A2FA6BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

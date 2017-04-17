@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{53E02625-2FED-40B0-B8E2-2C1B8203320D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MonoNanoGUI</RootNamespace>
+    <AssemblyName>MonoNanoGUI</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="OpenTK">
+      <HintPath>..\..\..\..\research\engines\MonoGame\MonoGame\ThirdParty\Dependencies\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Classes\Button.cs" />
+    <Compile Include="Classes\CursorType.cs" />
+    <Compile Include="Classes\Widget.cs" />
+    <Compile Include="Libraries\FontStash\enums.cs" />
+    <Compile Include="Libraries\FontStash\fontStash.cs" />
+    <Compile Include="Libraries\FontStash\glFontStash.cs" />
+    <Compile Include="Libraries\FontStash\stb_truetype.cs" />
+    <Compile Include="Libraries\NanoVG\enums.cs" />
+    <Compile Include="Libraries\NanoVG\glNanoVG.cs" />
+    <Compile Include="Libraries\NanoVG\nanoVG.cs" />
+    <Compile Include="Classes\Screen.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
