@@ -28,10 +28,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="OpenTK">
-      <HintPath>..\..\..\..\research\engines\MonoGame\MonoGame\ThirdParty\Dependencies\OpenTK.dll</HintPath>
-    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="OpenTK">
+      <HintPath>..\packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,6 +46,19 @@
     <Compile Include="Libraries\NanoVG\glNanoVG.cs" />
     <Compile Include="Libraries\NanoVG\nanoVG.cs" />
     <Compile Include="Classes\Screen.cs" />
+    <Compile Include="Classes\Theme.cs" />
+    <Compile Include="Classes\Color.cs" />
+    <Compile Include="Classes\Math\Vector3i.cs" />
+    <Compile Include="Classes\Math\Vector2i.cs" />
+    <Compile Include="Classes\Math\Vector4i.cs" />
+    <Compile Include="Classes\Math\VectorExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Classes\Math\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

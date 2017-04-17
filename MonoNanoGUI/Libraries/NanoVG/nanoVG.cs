@@ -315,7 +315,7 @@ namespace NanoVGDotNet
 			return color;
 		}
 
-		static NVGcolor nvgRGBAf(float r, float g, float b, float a)
+		public static NVGcolor nvgRGBAf(float r, float g, float b, float a)
 		{
 			NVGcolor color = default(NVGcolor);
 			// Use longer initialization to suppress warning.

@@ -24,6 +24,10 @@ namespace MonoNanoGUI
         protected string m_Caption;
         protected int m_Icon;
 
+        public Button () : this (null)
+        {
+        }
+
         public Button (Widget parent, string caption = "Button", int icon = 0)
             : base (parent)
         {
@@ -32,6 +36,14 @@ namespace MonoNanoGUI
 
         public override void Draw (NVGcontext ctx)
         {
+            base.Draw (ctx);
+
+            Color color = new Color (92, 255);
+
+            NanoVG.nvgBeginPath (ctx);
+            NanoVG.nvgRect (ctx, this.localPosition.X, this.localPosition.Y, this.size.X, this.size.Y);
+            NanoVG.nvgFillColor (ctx, NanoVG.nvgRGBAf (color.r, color.g, color.b, color.a));
+            NanoVG.nvgFill (ctx);
         }
     }
 }
