@@ -1,9 +1,10 @@
 ﻿using System;
 using OpenTK;
+using NanoVGDotNet;
 
 namespace MonoNanoGUI
 {
-    public struct Color
+    public struct Color4f
     {
         private Vector4 v;
 
@@ -17,37 +18,47 @@ namespace MonoNanoGUI
         public byte bb { get { return (byte)(v.Z * 255); } }
         public byte ab { get { return (byte)(v.W * 255); } }
 
-        public Color (Vector4 color)
+        public Color4f (Vector4 color)
         {
             this.v = color;
         }
 
-        public Color (float r, float g, float b, float a)
+        public Color4f (float r, float g, float b, float a)
             : this (new Vector4 (r, g, b, a)) { }
 
-        public Color (Vector3 color, float alpha) 
+        public Color4f (Vector3 color, float alpha) 
             : this (color.X, color.Y, color.Z, alpha) { }
 
-        public Color (float intensity, float alpha) 
+        public Color4f (float intensity, float alpha) 
             : this (Vector3.One * intensity, alpha) { }
 
-        public Color (int intensity, int alpha) 
+        public Color4f (int intensity, int alpha) 
             : this (Vector3.One * intensity / 255f, alpha / 255f) { }
         
-        public Color (Vector3 color) 
+        public Color4f (Vector3 color) 
             : this (color, 1f) { }
 
-        public Color (Vector3i color) 
+        public Color4f (Vector3i color) 
             : this (color.Div (255f)) { }
         
-        public Color (int r, int g, int b, int a) 
+        public Color4f (int r, int g, int b, int a) 
             : this ((new Vector4i (r, g, b, a).Div (255f))) { }
 
-        public Color Contrast ()
+        public Color4f Contrast ()
         {
             float luminance = v.Dot (new Vector4 (0.299f, 0.587f, 0.144f, 0f));
             float intensity = luminance < 0.5f ? 1f : 0f;
-            return new Color (intensity, 1f);
+            return new Color4f (intensity, 1f);
+        }
+
+        public NVGcolor ToNVGColor ()
+        {
+            NVGcolor ret;
+            ret.r = this.r;
+            ret.g = this.g;
+            ret.b = this.b;
+            ret.a = this.a;
+            return ret;
         }
     }
 }

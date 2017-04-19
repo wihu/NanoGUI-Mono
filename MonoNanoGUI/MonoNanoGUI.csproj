@@ -47,11 +47,12 @@
     <Compile Include="Libraries\NanoVG\nanoVG.cs" />
     <Compile Include="Classes\Screen.cs" />
     <Compile Include="Classes\Theme.cs" />
-    <Compile Include="Classes\Color.cs" />
+    <Compile Include="Classes\Color4f.cs" />
     <Compile Include="Classes\Math\Vector3i.cs" />
     <Compile Include="Classes\Math\Vector2i.cs" />
     <Compile Include="Classes\Math\Vector4i.cs" />
     <Compile Include="Classes\Math\VectorExtensions.cs" />
+    <Compile Include="Classes\Fonts.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Math\" />

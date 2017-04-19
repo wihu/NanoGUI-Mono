@@ -48,6 +48,9 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <None Include="Resources\Fonts\Roboto-Bold.ttf" />
+    <None Include="Resources\Fonts\Roboto-Regular.ttf" />
+    <None Include="Resources\Fonts\entypo.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

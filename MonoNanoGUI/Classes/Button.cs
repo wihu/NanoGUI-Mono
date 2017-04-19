@@ -23,6 +23,7 @@ namespace MonoNanoGUI
 
         protected string m_Caption;
         protected int m_Icon;
+        protected bool m_Pushed;
 
         public Button () : this (null)
         {
@@ -38,12 +39,28 @@ namespace MonoNanoGUI
         {
             base.Draw (ctx);
 
-            Color color = new Color (92, 255);
+            //Color4f color = new Color4f (92, 255);
 
-            NanoVG.nvgBeginPath (ctx);
-            NanoVG.nvgRect (ctx, this.localPosition.X, this.localPosition.Y, this.size.X, this.size.Y);
-            NanoVG.nvgFillColor (ctx, NanoVG.nvgRGBAf (color.r, color.g, color.b, color.a));
-            NanoVG.nvgFill (ctx);
+            //NanoVG.nvgBeginPath (ctx);
+            //NanoVG.nvgRect (ctx, this.localPosition.X, this.localPosition.Y, this.size.X, this.size.Y);
+            //NanoVG.nvgFillColor (ctx, NanoVG.nvgRGBAf (color.r, color.g, color.b, color.a));
+            //NanoVG.nvgFill (ctx);
+
+            NVGcolor gradTopColor = this.theme.buttonGradientTopUnfocusedColor;
+            NVGcolor gradBotColor = this.theme.buttonGradientBotUnfocusedColor;
+
+            if (m_Pushed)
+            {
+
+            }
+            else
+            {
+            }
+
+            int fontSize = m_FontSize;
+            NanoVG.nvgFontSize (ctx, fontSize);
+            NanoVG.nvgFontFace (ctx, "sans");
+
         }
     }
 }

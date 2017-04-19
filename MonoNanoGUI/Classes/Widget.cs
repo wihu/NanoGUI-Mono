@@ -8,7 +8,7 @@ namespace MonoNanoGUI
     public class Widget
     {
         protected Widget m_Parent;
-        protected Theme m_Theme;
+        protected Theme m_Theme = Theme.DefaultTheme;
         protected string m_Id;
         protected Vector2 m_Pos;
         protected Vector2 m_Size;
@@ -55,6 +55,14 @@ namespace MonoNanoGUI
             set
             {
                 m_Size = value;
+            }
+        }
+
+        public Theme theme
+        {
+            get
+            {
+                return m_Theme ?? (m_Theme = Theme.DefaultTheme);
             }
         }
 

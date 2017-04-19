@@ -303,6 +303,12 @@ namespace NanoVGDotNet
 			state.fontId = FontStash.fonsGetFontByName(ctx.fs, font);
 		}
 
+        public static void nvgFontFace(NVGcontext ctx, int fontId)
+        {
+	        NVGstate state = nvg__getState (ctx);
+            state.fontId = fontId;
+        }
+
 		public static NVGcolor nvgRGBA(byte r, byte g, byte b, byte a)
 		{
 			NVGcolor color = default(NVGcolor);

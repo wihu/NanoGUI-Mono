@@ -30,6 +30,10 @@ namespace MonoNanoGUIDemo
                 (int)NVGcreateFlags.NVG_STENCIL_STROKES |
                 (int)NVGcreateFlags.NVG_DEBUG);
 
+            Fonts.Load (ctx, "sans", "Roboto-Regular.ttf");
+            Fonts.Load (ctx, "sans-bold", "Roboto-Bold.ttf");
+            Fonts.Load (ctx, "icons", "entypo.ttf");
+
             button = new Button ();
             button.localPosition = new Vector2 (50f, 50f);
             button.size = new Vector2 (200f, 40f);
