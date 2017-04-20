@@ -53,6 +53,7 @@
     <Compile Include="Classes\Math\Vector4i.cs" />
     <Compile Include="Classes\Math\VectorExtensions.cs" />
     <Compile Include="Classes\Fonts.cs" />
+    <Compile Include="Libraries\NanoVG\PerfGraph.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Math\" />

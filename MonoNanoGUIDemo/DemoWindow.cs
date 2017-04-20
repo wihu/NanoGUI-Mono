@@ -38,6 +38,7 @@ namespace MonoNanoGUIDemo
             button.localPosition = new Vector2 (50f, 50f);
             button.size = new Vector2 (200f, 40f);
 
+            PerfGraph.InitGraph ((int)GraphrenderStyle.GRAPH_RENDER_FPS, "FPS");
             Console.WriteLine ("Load");
         }
 
@@ -57,6 +58,8 @@ namespace MonoNanoGUIDemo
         {
             base.OnRenderFrame (e);
 
+            PerfGraph.UpdateGraph ((float)e.Time);
+
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
@@ -68,6 +71,7 @@ namespace MonoNanoGUIDemo
             //NanoVG.nvgRect (ctx, 100,100, 120,30);
             //NanoVG.nvgFillColor (ctx, NanoVG.nvgRGBA(255,192,0,255));
             //NanoVG.nvgFill (ctx);
+            PerfGraph.RenderGraph (ctx, 5, 5);
 
             NanoVG.nvgEndFrame(ctx);
 
