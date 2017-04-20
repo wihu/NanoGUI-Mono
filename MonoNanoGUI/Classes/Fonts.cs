@@ -6,11 +6,13 @@ namespace MonoNanoGUI
 {
     public static class Fonts
     {
-        private static Dictionary<string, int> s_FontMap = new Dictionary<string, int>;
+        private static Dictionary<string, int> s_FontMap = new Dictionary<string, int> ();
+        private static readonly string RESOURCES_PATH = "Resources/Fonts/";
 
         public static void Load (NVGcontext ctx, string fontName, string fileName)
         {
-            int fontHandle = NanoVG.nvgCreateFont (ctx, fontName, fileName);
+            string filePath = RESOURCES_PATH + fileName;
+            int fontHandle = NanoVG.nvgCreateFont (ctx, fontName, filePath);
             s_FontMap[fontName] = fontHandle;
         }
 
