@@ -76,7 +76,7 @@ namespace MonoNanoGUI
             windowCornerRadius              = 2,
             windowHeaderHeight              = 30,
             windowDropShadowSize            = 10,
-            buttonCornerRadius              = 2,
+            buttonCornerRadius              = 5,
             tabBorderWidth                  = 0.75f,
             tabInnerMargin                  = 5,
             tabMinButtonWidth               = 20,

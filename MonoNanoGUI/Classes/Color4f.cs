@@ -6,6 +6,9 @@ namespace MonoNanoGUI
 {
     public struct Color4f
     {
+        public static readonly Color4f White = new Color4f (1f, 1f);
+        public static readonly Color4f Black = new Color4f (0f, 1f);
+
         private Vector4 v;
 
         public float r { get { return v.X; } }
