@@ -8,6 +8,9 @@ namespace MonoNanoGUI
     {
         public static readonly Color4f White = new Color4f (1f, 1f);
         public static readonly Color4f Black = new Color4f (0f, 1f);
+        public static readonly Color4f Red   = new Color4f (1f, 0f, 0f, 1f);
+        public static readonly Color4f Green = new Color4f (0f, 1f, 0f, 1f);
+        public static readonly Color4f Blue  = new Color4f (0f, 0f, 1f, 1f);
 
         private Vector4 v;
 

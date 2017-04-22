@@ -173,7 +173,7 @@ namespace MonoNanoGUI
             return false;
         }
 
-        public Vector2 GetPreferredSize (NVGcontext ctx)
+        public override Vector2 GetPreferredSize (NVGcontext ctx)
         {
             return Vector2.Zero;
         }
@@ -246,29 +246,41 @@ namespace MonoNanoGUI
             NanoVG.nvgText (ctx, textPos.X, textPos.Y + 1f, this.caption);
         }
 
-#region Builder Methods
-        public Button WithClickCallback ()
+        #region Builder Methods
+        public Button WithCaption (string caption)
         {
+            this.caption = caption;
+            return this;
+        }
+        public Button WithClickCallback (Action<Button> callback)
+        {
+            OnClickCallback -= callback;
+            OnClickCallback += callback;
         	return this;
         }
 
         public Button WithFlags (Flags flags)
         {
+            this.flags = flags;
             return this;
         }
 
-        public Button WithChangeCallback ()
+        public Button WithChangeCallback (Action<Button, bool> callback)
         {
+            OnChangeCallback -= callback;
+            OnChangeCallback += callback;
             return this;
         }
 
         public Button WithBackgroundColor (NVGcolor color)
         {
+            this.backgroundColor = color;
             return this;
         }
 
         public Button WithIcon (int icon)
         {
+            this.icon = icon;
             return this;
         }
 #endregion

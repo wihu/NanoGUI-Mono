@@ -82,6 +82,11 @@ namespace MonoNanoGUI
             }
         }
 
+        public Widget ()
+            : this (null)
+        {
+        }
+
         public Widget (Widget parent)
         {
             if (parent)
@@ -215,9 +220,9 @@ namespace MonoNanoGUI
             return false;
         }
 
-        public virtual Vector2i GetPreferredSize (NVGcontext ctx)
+        public virtual Vector2 GetPreferredSize (NVGcontext ctx)
         {
-	        return Vector2i.Zero;
+	        return Vector2.Zero;
         }
 
         public virtual void PerformLayout (NVGcontext ctx)
@@ -255,7 +260,7 @@ namespace MonoNanoGUI
         }
 
 #region Builder Methods
-        public Widget WithPosition (Vector2 pos)
+        public Widget WithLocalPosition (Vector2 pos)
         {
             this.localPosition = pos;
             return this;
@@ -266,12 +271,27 @@ namespace MonoNanoGUI
             this.fontSize = size;
             return this;
         }
+        public Widget WithSize (Vector2 size)
+        {
+            this.size = size;
+            return this;
+        }
         public Widget WithFixedSize (Vector2 size)
         {
             this.fixedSize = size;
             return this;
         }
 #endregion
+
+#region Helper Methods
+        public T AddNewWidget<T> () where T : Widget, new()
+        {
+            T widget = new T ();
+            this.AddChild (widget);
+            return widget;
+        }
+#endregion
+
         public static implicit operator bool (Widget obj)
         {
             return (null != obj);

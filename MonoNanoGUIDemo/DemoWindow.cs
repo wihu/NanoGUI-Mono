@@ -12,7 +12,7 @@ namespace MonoNanoGUIDemo
     public class DemoWindow : GameWindow
     {
         NVGcontext ctx;
-        Window window;
+        Widget screen;
 
         // NOTE: Only works with Compiler x64, NativeWindow runs but freezes on x86.
         public DemoWindow (int width, int height)
@@ -27,7 +27,7 @@ namespace MonoNanoGUIDemo
         {
             base.OnLoad (e);
 
-            GL.ClearColor (System.Drawing.Color.White);
+            GL.ClearColor (Color.Cornsilk);
 
             GlNanoVG.nvgCreateGL (ref ctx, (int)NVGcreateFlags.NVG_ANTIALIAS |
                 (int)NVGcreateFlags.NVG_STENCIL_STROKES |
@@ -37,15 +37,33 @@ namespace MonoNanoGUIDemo
             Fonts.Load (ctx, "sans-bold", "Roboto-Bold.ttf");
             Fonts.Load (ctx, "icons", "entypo.ttf");
 
-            Button button = new Button ();
-            button.localPosition = new Vector2 (5f, 5f);
-            button.size = new Vector2 (200f, 40f);
+            screen = new Widget ()
+                .WithLocalPosition (Vector2.Zero)
+                .WithSize (new Vector2 (this.Width, this.Height));
 
-            window = new Window ();
-            window.localPosition = new Vector2 (50f, 50f);
-            window.size = new Vector2 (250f, 400f);
-            window.AddChild (button);
+            {
+                //Button button = new Button ();
+                //button.localPosition = new Vector2 (5f, 40f);
+                //button.size = new Vector2 (200f, 40f);
 
+                Window window = screen.AddNewWidget<Window> ();
+                window.WithTitle ("Button demo")
+                      .WithLocalPosition (new Vector2 (15f, 50f))
+                      .WithSize (new Vector2 (250f, 400f));
+
+                window.AddNewWidget<Button> ()
+                      .WithCaption ("Plain button")
+                      .WithClickCallback ((btn) => Console.WriteLine ("Click!"))
+                      .WithSize (new Vector2 (200f, 40f))
+                      .WithLocalPosition (new Vector2 (25f, 40f));
+
+                window.AddNewWidget<Button> ()
+                      .WithCaption ("Styled")
+                      .WithIcon (1)
+                      .WithSize (new Vector2 (200f, 40f))
+                      .WithLocalPosition (new Vector2 (25f, 90f));
+
+            }
             PerfGraph.InitGraph ((int)GraphrenderStyle.GRAPH_RENDER_FPS, "FPS");
             Console.WriteLine ("Load");
         }
@@ -72,8 +90,11 @@ namespace MonoNanoGUIDemo
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
             NanoVG.nvgBeginFrame(ctx, Width, Height, 1);
-            window.Draw (ctx);
 
+            if (screen)
+            {
+                screen.Draw (ctx);
+            }
             PerfGraph.RenderGraph (ctx, 5, 5);
 
             NanoVG.nvgEndFrame(ctx);
@@ -86,10 +107,10 @@ namespace MonoNanoGUIDemo
             base.OnMouseDown (e);
 
             Vector2 p = new Vector2 (e.Mouse.X, e.Mouse.Y);
-            if (window && window.ContainsPoint (p))
+            if (screen && screen.ContainsPoint (p))
             {
                 //Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
-                window.HandleMouseButtonEvent (p, (int)e.Button, e.IsPressed, 0);
+                screen.HandleMouseButtonEvent (p, (int)e.Button, e.IsPressed, 0);
             }
         }
 
@@ -97,11 +118,11 @@ namespace MonoNanoGUIDemo
         {
             base.OnMouseUp (e);
 
-            if (window)
+            if (screen)
             {
                 //Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
-                Vector2 p = new Vector2 (e.Position.X, e.Position.Y);
-                window.HandleMouseButtonEvent (p, 0, e.IsPressed, 0);
+                Vector2 p = new Vector2 (e.Mouse.X, e.Mouse.Y);
+                screen.HandleMouseButtonEvent (p, 0, e.IsPressed, 0);
             }
         }
     }
