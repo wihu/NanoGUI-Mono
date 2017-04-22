@@ -1,32 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenTK;
+using OpenTK.Input;
 using NanoVGDotNet;
 
 namespace MonoNanoGUI
 {
     public class Widget
     {
-        protected Widget m_Parent;
         protected Theme m_Theme = Theme.DefaultTheme;
         protected string m_Id;
-        protected Vector2 m_Pos;
+        protected Vector2 m_LocalPos;
         protected Vector2 m_Size;
         protected Vector2 m_FixedSize;
-        protected bool m_Visible;
-        protected bool m_Enabled;
-        protected bool m_Focused;
         protected bool m_MouseFocus;
         protected string m_Tooltip;
         protected CursorType m_CursorType;
         protected List<Widget> m_Children = new List<Widget> ();
 
+        public Widget parent { get; set; }
         public int instanceId { get; set; }
         public bool enabled { get; set; }
         public bool focused { get; set; }
         public string tooltipText { get; set; }
         public int fontSize { get; set; }
         public bool hasFontSize { get { return (0 < this.fontSize); } }
+        public Vector2 size { get { return m_Size; } set { m_Size = value; } }
+        public float width { get { return m_Size.X; } set { m_Size.X = value; } }
+        public float height { get { return m_Size.Y; } set { m_Size.Y = value; } }
         public Vector2 fixedSize { get { return m_FixedSize; } set { m_FixedSize = value; } }
         public float fixedWidth { get { return m_FixedSize.X; } set { m_FixedSize.X = value; } }
         public float fixedHeight { get { return m_FixedSize.Y; } set { m_FixedSize.Y = value; } }
@@ -57,39 +58,15 @@ namespace MonoNanoGUI
             }
         }
 
-        public Widget parent
-        {
-            get
-            {
-                return m_Parent;
-            }
-            set
-            {
-                m_Parent = value;
-            }
-        }
-
         public Vector2 localPosition
         {
             get
             {
-                return m_Pos;
+                return m_LocalPos;
             }
             set
             {
-                m_Pos = value;
-            }
-        }
-
-        public Vector2 size
-        {
-            get
-            {
-                return m_Size;
-            }
-            set
-            {
-                m_Size = value;
+                m_LocalPos = value;
             }
         }
 
@@ -99,6 +76,10 @@ namespace MonoNanoGUI
             {
                 return m_Theme ?? (m_Theme = Theme.DefaultTheme);
             }
+            set
+            {
+                m_Theme = value;
+            }
         }
 
         public Widget (Widget parent)
@@ -107,15 +88,21 @@ namespace MonoNanoGUI
             {
                 parent.AddChild (this);
             }
+
+            this.enabled = true;
+            this.isVisibleSelf = true;
         }
 
         public virtual void AddChild (int index, Widget widget)
         {
-
+            m_Children.Insert (index, widget);
+            widget.parent = this;
+            widget.theme = this.theme;
         }
 
         public void AddChild (Widget widget)
         {
+            AddChild (this.childCount, widget);
         }
         public void RemoveChild (int index)
         { 
@@ -146,22 +133,21 @@ namespace MonoNanoGUI
 
         public Vector2 GetScreenPosition ()
         {
-            if (m_Parent)
+            if (this.parent)
             {
-                return m_Parent.GetScreenPosition () + m_Pos;
+                return this.parent.GetScreenPosition () + this.localPosition;
             }
-            return m_Pos;
+            return this.localPosition;
         }
 
         public bool ContainsPoint (Vector2 p)
         {
-            Vector2 pos = GetScreenPosition ();
-            Vector2 rel = (p - pos);
-            if (0 > rel.X || 0 > rel.Y)
+            Vector2 local = (p - this.localPosition);
+            if (0 > local.X || 0 > local.Y)
             {
                 return false;
             }
-            if (rel.X > m_Size.X || rel.Y > m_Size.Y)
+            if (local.X > m_Size.X || local.Y > m_Size.Y)
             {
                 return false;
             }
@@ -175,6 +161,24 @@ namespace MonoNanoGUI
 
         public virtual bool HandleMouseButtonEvent (Vector2 p, int button, bool down, int modifiers)
         {
+            Vector2 local = p - this.localPosition;
+            int childCount = m_Children.Count;
+            for (int i = childCount - 1; 0 <= i; --i)
+            {
+                Widget child = m_Children [i];
+                if (!child.isVisibleSelf || !child.ContainsPoint (local))
+                {
+                    continue;
+                }
+                if (child.HandleMouseButtonEvent (local, button, down, modifiers))
+                {
+                    return true;
+                }
+            }
+            if ((int)MouseButton.Left == button && down && !this.focused)
+            {
+                RequestFocus ();
+            }
             return false;
         }
 
@@ -222,6 +226,25 @@ namespace MonoNanoGUI
         }
         public virtual void Draw (NVGcontext ctx)
         {
+            // TODO: draw debug bounds.
+
+            int childCount = m_Children.Count;
+            if (0 == childCount)
+            {
+                return;
+            }
+
+            Vector2 pos = this.localPosition;
+            NanoVG.nvgTranslate (ctx, pos.X, pos.Y);
+            for (int i = 0; childCount > i; ++i)
+            {
+                Widget child = m_Children [i];
+                if (child.isVisibleSelf)
+                {
+                    child.Draw (ctx);
+                }
+            }
+            NanoVG.nvgTranslate (ctx, -pos.X, -pos.Y);
         }
 
         public virtual void Save (Serializer s)

@@ -12,7 +12,7 @@ namespace MonoNanoGUIDemo
     public class DemoWindow : GameWindow
     {
         NVGcontext ctx;
-        Button button;
+        Window window;
 
         // NOTE: Only works with Compiler x64, NativeWindow runs but freezes on x86.
         public DemoWindow (int width, int height)
@@ -37,9 +37,14 @@ namespace MonoNanoGUIDemo
             Fonts.Load (ctx, "sans-bold", "Roboto-Bold.ttf");
             Fonts.Load (ctx, "icons", "entypo.ttf");
 
-            button = new Button ();
-            button.localPosition = new Vector2 (50f, 50f);
+            Button button = new Button ();
+            button.localPosition = new Vector2 (5f, 5f);
             button.size = new Vector2 (200f, 40f);
+
+            window = new Window ();
+            window.localPosition = new Vector2 (50f, 50f);
+            window.size = new Vector2 (250f, 400f);
+            window.AddChild (button);
 
             PerfGraph.InitGraph ((int)GraphrenderStyle.GRAPH_RENDER_FPS, "FPS");
             Console.WriteLine ("Load");
@@ -67,7 +72,7 @@ namespace MonoNanoGUIDemo
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
             NanoVG.nvgBeginFrame(ctx, Width, Height, 1);
-            button.Draw (ctx);
+            window.Draw (ctx);
 
             PerfGraph.RenderGraph (ctx, 5, 5);
 
@@ -80,11 +85,11 @@ namespace MonoNanoGUIDemo
         {
             base.OnMouseDown (e);
 
-            if (button)
+            Vector2 p = new Vector2 (e.Mouse.X, e.Mouse.Y);
+            if (window && window.ContainsPoint (p))
             {
-                Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
-                Vector2 p = new Vector2 (e.Position.X, e.Position.Y);
-                button.HandleMouseButtonEvent (p, (int)e.Button, e.IsPressed, 0);
+                //Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
+                window.HandleMouseButtonEvent (p, (int)e.Button, e.IsPressed, 0);
             }
         }
 
@@ -92,11 +97,11 @@ namespace MonoNanoGUIDemo
         {
             base.OnMouseUp (e);
 
-            if (button)
+            if (window)
             {
-                Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
+                //Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
                 Vector2 p = new Vector2 (e.Position.X, e.Position.Y);
-                button.HandleMouseButtonEvent (p, 0, e.IsPressed, 0);
+                window.HandleMouseButtonEvent (p, 0, e.IsPressed, 0);
             }
         }
     }
