@@ -10,7 +10,7 @@ namespace MonoNanoGUIDemo
         public static void Main (string[] args)
         {
             ToolkitOptions options = new ToolkitOptions ();
-            options.Backend = PlatformBackend.PreferNative;
+            options.Backend = PlatformBackend.Default;
             Toolkit.Init (options);
 
             Console.WriteLine ("Start Demo");
