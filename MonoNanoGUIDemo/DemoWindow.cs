@@ -3,6 +3,7 @@ using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 using NanoVGDotNet;
 using MonoNanoGUI;
 
@@ -18,6 +19,8 @@ namespace MonoNanoGUIDemo
             //: base (width, height, GraphicsMode.Default, "MonoNanoGUI Demo Window", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
             : base (width, height, GraphicsMode.Default, "MonoNanoGUI Demo Window")
         {
+
+
         }
 
         protected override void OnLoad (EventArgs e)
@@ -63,19 +66,38 @@ namespace MonoNanoGUIDemo
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
-            //GL.Flush ();
             NanoVG.nvgBeginFrame(ctx, Width, Height, 1);
             button.Draw (ctx);
 
-            //NanoVG.nvgBeginPath (ctx);
-            //NanoVG.nvgRect (ctx, 100,100, 120,30);
-            //NanoVG.nvgFillColor (ctx, NanoVG.nvgRGBA(255,192,0,255));
-            //NanoVG.nvgFill (ctx);
             PerfGraph.RenderGraph (ctx, 5, 5);
 
             NanoVG.nvgEndFrame(ctx);
 
             this.SwapBuffers();
+        }
+
+        protected override void OnMouseDown (OpenTK.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseDown (e);
+
+            if (button)
+            {
+                Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
+                Vector2 p = new Vector2 (e.Position.X, e.Position.Y);
+                button.HandleMouseButtonEvent (p, (int)e.Button, e.IsPressed, 0);
+            }
+        }
+
+        protected override void OnMouseUp (OpenTK.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseUp (e);
+
+            if (button)
+            {
+                Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
+                Vector2 p = new Vector2 (e.Position.X, e.Position.Y);
+                button.HandleMouseButtonEvent (p, 0, e.IsPressed, 0);
+            }
         }
     }
 }

@@ -54,6 +54,8 @@
     <Compile Include="Classes\Math\VectorExtensions.cs" />
     <Compile Include="Classes\Fonts.cs" />
     <Compile Include="Libraries\NanoVG\PerfGraph.cs" />
+    <Compile Include="Classes\Serializer.cs" />
+    <Compile Include="Classes\Cursor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Math\" />
