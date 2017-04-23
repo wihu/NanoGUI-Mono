@@ -31,14 +31,32 @@ namespace MonoNanoGUI
         }
 
         protected bool m_Pushed;
+        protected int m_Icon;
         protected List<Button> m_ButtonGroup = new List<Button> ();
 
+        private string m_IconUTF8 = string.Empty;
+
         public string caption { get; set; }
-        public int icon { get; set; }
         public IconAnchorType iconAnchorType { get; set; }
         public Flags flags { get; set; }
         public NVGcolor backgroundColor { get; set; }
         public NVGcolor textColor { get; set; }
+
+        public int icon 
+        { 
+            get
+            {
+                return m_Icon;
+            }
+            set
+            {
+                if (value != m_Icon)
+                {
+                    m_IconUTF8 = Fonts.UnicodeToUTF8 (value);
+                }
+                m_Icon = value;
+            }
+        }
 
         public bool pushed
         {
@@ -73,6 +91,8 @@ namespace MonoNanoGUI
             this.caption = caption;
             this.flags = Flags.NormalButton;
             this.pushed = false;
+            this.fontSize = -1;
+            this.icon = icon;
         }
 
         public bool HasFlag (Flags flag)
@@ -232,17 +252,116 @@ namespace MonoNanoGUI
             NanoVG.nvgStrokeColor (ctx, style.borderDarkColor);
             NanoVG.nvgStroke (ctx);
 
-            //int fontSize = m_FontSize;
-            int fontSize = style.buttonFontSize;
+            int fontSize = 0 > this.fontSize ? style.buttonFontSize : this.fontSize;
             NanoVG.nvgFontSize (ctx, fontSize);
             NanoVG.nvgFontFace (ctx, style.fontBold);
-            NanoVG.nvgTextAlign (ctx, (int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
 
             float tw = NanoVG.nvgTextBounds (ctx, 0f, 0f, this.caption, null);
             Vector2 center = pos + size * 0.5f;
             Vector2 textPos = new Vector2 (center.X - tw * 0.5f, center.Y - 1f);
+            NVGcolor textColor;
+            if (this.enabled)
+            {
+                textColor = (0f == this.textColor.a) ? style.textColor : this.textColor;
+            }
+            else
+            {
+                textColor = style.disabledTextColor;
+            }
 
-            NanoVG.nvgFillColor (ctx, style.textColor);
+            int btnIcon = this.icon;
+            if (0 != btnIcon)
+            {
+                float iw, ih;
+                iw = 0f;
+                ih = fontSize;
+                if (NanoVG.nvgIsFontIcon (btnIcon))
+                {
+                    ih *= 1.5f;
+                    NanoVG.nvgFontSize (ctx, ih);
+                    NanoVG.nvgFontFace (ctx, style.fontIcons);
+                    iw = NanoVG.nvgTextBounds (ctx, 0, 0, m_IconUTF8, null);
+                }
+                else
+                {
+                    int w, h;
+                    w = h = 1;
+                    ih *= 0.9f;
+                    NanoVG.nvgImageSize (ctx, btnIcon, ref w, ref h);
+                    if (0 < h)
+                    {
+                        iw = w * ih / h;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty (this.caption))
+                {
+                    iw += size.Y * 0.15f;
+                }
+                NanoVG.nvgFillColor (ctx, textColor);
+                NanoVG.nvgTextAlign (ctx, (int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
+                Vector2 iconPos = center;
+                iconPos.Y -= 1f;
+
+                switch (this.iconAnchorType)
+                { 
+                    case IconAnchorType.LeftCentered:
+                        {
+                            iconPos.X -= (tw + iw) * 0.5f;
+                            textPos.X += iw * 0.5f;
+                        }
+                        break;
+                    case IconAnchorType.RightCentered:
+                        {
+                            textPos.X -= iw * 0.5f;
+                            iconPos.X += tw * 0.5f;
+                        }
+                        break;
+                    case IconAnchorType.Left:
+                        {
+                            iconPos.X = pos.X + 8f;
+                        }
+                        break;
+                    case IconAnchorType.Right:
+                        {
+                            iconPos.X = pos.X + size.X - iw - 8f;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                if (NanoVG.nvgIsFontIcon (btnIcon))
+                {
+                    // NOTE: icon rendering bug, any unicode > 0x10000 not being rendered correctly.
+                    //       e.g. 0x1F680 (Font.Entypo.ICON_ROCKET).
+                    NanoVG.nvgText (ctx, iconPos.X, iconPos.Y + 1f, m_IconUTF8);
+                }
+                else
+                {
+                    float imgAlpha = this.enabled ? 0.5f : 0.25f;
+                    NVGpaint imgPaint = NanoVG.nvgImagePattern (
+                        ctx
+                        , iconPos.X, iconPos.Y - ih * 0.5f, iw, ih
+                        , 0f, btnIcon, imgAlpha);
+                    NanoVG.nvgFillPaint (ctx, imgPaint);
+                    NanoVG.nvgFill (ctx);
+                }
+
+                // DEBUG: ICON BOUNDS
+                //NanoVG.nvgStrokeWidth (ctx, 1.0f);
+                //NanoVG.nvgBeginPath (ctx);
+                //NanoVG.nvgRect (ctx, iconPos.X, iconPos.Y - ih * 0.5f, iw, ih);
+                //NanoVG.nvgStrokeColor (ctx, textColor);
+                //NanoVG.nvgStroke(ctx);
+            }
+
+            NanoVG.nvgFontSize (ctx, fontSize);
+            NanoVG.nvgFontFace (ctx, style.fontBold);
+            NanoVG.nvgTextAlign (ctx, (int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
+            NanoVG.nvgFillColor (ctx, style.textShadowColor);
+            NanoVG.nvgText (ctx, textPos.X, textPos.Y, this.caption);
+            NanoVG.nvgFillColor (ctx, textColor);
             NanoVG.nvgText (ctx, textPos.X, textPos.Y + 1f, this.caption);
         }
 
@@ -252,6 +371,7 @@ namespace MonoNanoGUI
             this.caption = caption;
             return this;
         }
+
         public Button WithClickCallback (Action<Button> callback)
         {
             OnClickCallback -= callback;
@@ -278,9 +398,10 @@ namespace MonoNanoGUI
             return this;
         }
 
-        public Button WithIcon (int icon)
+        public Button WithIcon (int icon, IconAnchorType anchorType = IconAnchorType.Left)
         {
             this.icon = icon;
+            this.iconAnchorType = anchorType;
             return this;
         }
 #endregion

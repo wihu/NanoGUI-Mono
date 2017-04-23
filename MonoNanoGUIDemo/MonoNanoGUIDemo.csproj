@@ -38,6 +38,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DemoWindow.cs" />
+    <Compile Include="Font.Entypo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoNanoGUI\MonoNanoGUI.csproj">

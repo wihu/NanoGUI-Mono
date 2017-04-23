@@ -81,6 +81,16 @@ namespace NanoVGDotNet
 		//if defined NANOVG_GL2_IMPLEMENTATION
 		public const int NANOVG_GL_UNIFORMARRAY_SIZE = 11;
 
+        public static bool nvgIsImageIcon (int value)
+        {
+            return (1024 > value);
+        }
+
+        public static bool nvgIsFontIcon (int value)
+        {
+            return (1024 <= value);
+        }
+
 		static int NVG_COUNTOF(int arr)
 		{
 			//return (sizeof(arr) / sizeof(0[arr]))

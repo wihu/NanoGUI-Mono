@@ -42,10 +42,6 @@ namespace MonoNanoGUIDemo
                 .WithSize (new Vector2 (this.Width, this.Height));
 
             {
-                //Button button = new Button ();
-                //button.localPosition = new Vector2 (5f, 40f);
-                //button.size = new Vector2 (200f, 40f);
-
                 Window window = screen.AddNewWidget<Window> ();
                 window.WithTitle ("Button demo")
                       .WithLocalPosition (new Vector2 (15f, 50f))
@@ -59,13 +55,14 @@ namespace MonoNanoGUIDemo
 
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Styled")
-                      .WithIcon (1)
+                      .WithIcon ((int)Font.Entypo.ICON_LOGIN, Button.IconAnchorType.LeftCentered)
                       .WithSize (new Vector2 (200f, 40f))
                       .WithLocalPosition (new Vector2 (25f, 90f));
 
             }
             PerfGraph.InitGraph ((int)GraphrenderStyle.GRAPH_RENDER_FPS, "FPS");
             Console.WriteLine ("Load");
+            //Console.WriteLine ("Test Unicode to UTF8 = " + Fonts.UnicodeToUTF8 (0).Length);
         }
 
         protected override void OnResize (EventArgs e)
