@@ -45,24 +45,35 @@ namespace MonoNanoGUIDemo
                 Window window = screen.AddNewWidget<Window> ();
                 window.WithTitle ("Button demo")
                       .WithLocalPosition (new Vector2 (15f, 50f))
-                      .WithSize (new Vector2 (250f, 400f));
+                      .WithSize (new Vector2 (250f, 400f))
+                      .WithLayout (new BoxLayout (Layout.Orientation.Vertical, Layout.Alignment.Middle, 10, 5));
 
                 window.AddNewWidget<Label> ()
+                      .WithCaption ("Push buttons")
                       .WithFont ("sans-bold");
-                
+
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Plain button")
                       .WithClickCallback ((btn) => Console.WriteLine ("Click!"))
-                      .WithSize (new Vector2 (200f, 40f))
-                      .WithLocalPosition (new Vector2 (25f, 40f));
+                      .WithFixedSize (new Vector2 (200f, 40f));
 
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Styled")
                       .WithIcon ((int)Font.Entypo.ICON_LOGIN, Button.IconAnchorType.LeftCentered)
-                      .WithSize (new Vector2 (200f, 40f))
-                      .WithLocalPosition (new Vector2 (25f, 90f));
+                      .WithFixedSize (new Vector2 (200f, 40f));
 
+                window.AddNewWidget<Label> ()
+                      .WithCaption ("Toggle buttons")
+                      .WithFont ("sans-bold");
+
+                window.AddNewWidget<Button> ()
+                      .WithFlags (Button.Flags.ToggleButton)
+                      .WithCaption ("Toggle me")
+                      .WithFixedSize (new Vector2 (200f, 40f)); // TODO: broken without fixed size? set default size?
             }
+
+            screen.PerformLayout (ctx);
+
             PerfGraph.InitGraph ((int)GraphrenderStyle.GRAPH_RENDER_FPS, "FPS");
             Console.WriteLine ("Load");
             //Console.WriteLine ("Test Unicode to UTF8 = " + Fonts.UnicodeToUTF8 (0).Length);

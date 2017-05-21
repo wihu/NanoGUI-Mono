@@ -58,9 +58,14 @@
     <Compile Include="Classes\Cursor.cs" />
     <Compile Include="Classes\Window.cs" />
     <Compile Include="Classes\Label.cs" />
+    <Compile Include="Classes\Layout\Layout.cs" />
+    <Compile Include="Classes\Layout\BoxLayout.cs" />
+    <Compile Include="Classes\Layout\GridLayout.cs" />
+    <Compile Include="Classes\Layout\GroupLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Math\" />
+    <Folder Include="Classes\Layout\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

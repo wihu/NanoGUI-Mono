@@ -95,8 +95,15 @@ namespace MonoNanoGUI
             else
             {
                 NanoVG.nvgTextAlign (ctx, (int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
-                NanoVG.nvgText (ctx, pos.X, pos.Y * 0.5f, caption);
+                NanoVG.nvgText (ctx, pos.X, pos.Y + this.size.Y * 0.5f, caption);
             }
+
+            // DEBUG: BOUNDS
+            //NanoVG.nvgStrokeWidth (ctx, 1.0f);
+            //NanoVG.nvgBeginPath (ctx);
+            //NanoVG.nvgRect (ctx, pos.X, pos.Y, this.size.X, this.size.Y);
+            //NanoVG.nvgStrokeColor (ctx, this.color);
+            //NanoVG.nvgStroke(ctx);
         }
 
         public override void Save (Serializer s)
@@ -109,7 +116,12 @@ namespace MonoNanoGUI
             base.Load (s);
         }
 
-#region Builder Methods
+        #region Builder Methods
+        public Label WithCaption (string caption)
+        {
+            this.caption = caption;
+            return this;
+        }
         public Label WithFont (string font)
         {
             this.font = font;

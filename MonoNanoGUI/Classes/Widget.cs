@@ -19,6 +19,7 @@ namespace MonoNanoGUI
         protected List<Widget> m_Children = new List<Widget> ();
 
         public Widget parent { get; set; }
+        public Layout layout { get; set; }
         public int instanceId { get; set; }
         public bool enabled { get; set; }
         public bool focused { get; set; }
@@ -31,10 +32,10 @@ namespace MonoNanoGUI
         public Vector2 fixedSize { get { return m_FixedSize; } set { m_FixedSize = value; } }
         public float fixedWidth { get { return m_FixedSize.X; } set { m_FixedSize.X = value; } }
         public float fixedHeight { get { return m_FixedSize.Y; } set { m_FixedSize.Y = value; } }
-        public bool isVisibleSelf { get; set; }
+        public bool isVisible { get; set; }
         public Cursor cursor { get; set; }
 
-        public bool isVisibleInHierarchy
+        public bool isVisibleRecursive
         {
             get
             {
@@ -42,7 +43,7 @@ namespace MonoNanoGUI
                 Widget widget = this;
                 while (widget && visible)
                 {
-                    visible &= widget.isVisibleSelf;
+                    visible &= widget.isVisible;
                     widget = widget.parent;
                 }
 
@@ -95,7 +96,7 @@ namespace MonoNanoGUI
             }
 
             this.enabled = true;
-            this.isVisibleSelf = true;
+            this.isVisible = true;
         }
 
         public int GetPreferredFontSize ()
@@ -106,7 +107,7 @@ namespace MonoNanoGUI
             {
                 return ret;
             }
-            if (null != this.theme)
+            if (this.theme)
             {
                 return this.theme.standardFontSize;
             }
@@ -125,7 +126,7 @@ namespace MonoNanoGUI
             AddChild (this.childCount, widget);
         }
         public void RemoveChild (int index)
-        { 
+        {
         }
         public void RemoveChild (Widget widget)
         {
@@ -138,7 +139,7 @@ namespace MonoNanoGUI
 
         public Widget GetChild (int index)
         {
-            return m_Children [index];
+            return m_Children[index];
         }
 
         public int GetChildIndex (Widget widget)
@@ -185,8 +186,8 @@ namespace MonoNanoGUI
             int childCount = m_Children.Count;
             for (int i = childCount - 1; 0 <= i; --i)
             {
-                Widget child = m_Children [i];
-                if (!child.isVisibleSelf || !child.ContainsPoint (local))
+                Widget child = m_Children[i];
+                if (!child.isVisible || !child.ContainsPoint (local))
                 {
                     continue;
                 }
@@ -237,12 +238,39 @@ namespace MonoNanoGUI
 
         public virtual Vector2 GetPreferredSize (NVGcontext ctx)
         {
-	        return Vector2.Zero;
+            if (this.layout)
+            {
+                return this.layout.GetPreferredSize (ctx, this);
+            }
+            return this.size;
+        }
+
+        public void ApplyTargetSize (NVGcontext ctx)
+        {
+            Vector2 prefSize = GetPreferredSize (ctx);
+            Vector2 fixedSize = this.fixedSize;
+            Vector2 targetSize;
+            targetSize.X = 0f < fixedSize.X ? fixedSize.X : prefSize.X;
+            targetSize.Y = 0f < fixedSize.Y ? fixedSize.Y : prefSize.Y;
+
+            this.size = targetSize;
         }
 
         public virtual void PerformLayout (NVGcontext ctx)
         {
-            
+            if (this.layout)
+            {
+                this.layout.PerformLayout (ctx, this);
+                return;
+            }
+
+            int childCount = this.childCount;
+            for (int i = 0; childCount > i; ++i)
+            {
+                Widget child = this.GetChild (i);
+                child.ApplyTargetSize (ctx);
+                child.PerformLayout (ctx);
+            }
         }
         public virtual void Draw (NVGcontext ctx)
         {
@@ -258,8 +286,8 @@ namespace MonoNanoGUI
             NanoVG.nvgTranslate (ctx, pos.X, pos.Y);
             for (int i = 0; childCount > i; ++i)
             {
-                Widget child = m_Children [i];
-                if (child.isVisibleSelf)
+                Widget child = m_Children[i];
+                if (child.isVisible)
                 {
                     child.Draw (ctx);
                 }
@@ -274,7 +302,7 @@ namespace MonoNanoGUI
         {
         }
 
-#region Builder Methods
+        #region Builder Methods
         public Widget WithLocalPosition (Vector2 pos)
         {
             this.localPosition = pos;
@@ -294,6 +322,11 @@ namespace MonoNanoGUI
         public Widget WithFixedSize (Vector2 size)
         {
             this.fixedSize = size;
+            return this;
+        }
+        public Widget WithLayout (Layout layout)
+        {
+            this.layout = layout;
             return this;
         }
 #endregion

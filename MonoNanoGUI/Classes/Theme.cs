@@ -68,6 +68,11 @@ namespace MonoNanoGUI
             this.name = name;
         }
 
+        public static implicit operator bool (Theme obj)
+        {
+	        return (null != obj);
+        }
+
         public static readonly Theme DefaultTheme = new Theme ("Default Dark")
         {
             standardFontSize                = 16,
