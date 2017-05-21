@@ -98,6 +98,21 @@ namespace MonoNanoGUI
             this.isVisibleSelf = true;
         }
 
+        public int GetPreferredFontSize ()
+        {
+            // put override font size in higher priority?
+            int ret = this.fontSize;
+            if (0 <= ret)
+            {
+                return ret;
+            }
+            if (null != this.theme)
+            {
+                return this.theme.standardFontSize;
+            }
+            return ret;
+        }
+
         public virtual void AddChild (int index, Widget widget)
         {
             m_Children.Insert (index, widget);

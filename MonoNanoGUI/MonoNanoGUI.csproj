@@ -57,6 +57,7 @@
     <Compile Include="Classes\Serializer.cs" />
     <Compile Include="Classes\Cursor.cs" />
     <Compile Include="Classes\Window.cs" />
+    <Compile Include="Classes\Label.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Math\" />

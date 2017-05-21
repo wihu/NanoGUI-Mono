@@ -365,7 +365,7 @@ namespace MonoNanoGUI
             NanoVG.nvgText (ctx, textPos.X, textPos.Y + 1f, this.caption);
         }
 
-        #region Builder Methods
+#region Builder Methods
         public Button WithCaption (string caption)
         {
             this.caption = caption;

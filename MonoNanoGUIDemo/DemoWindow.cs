@@ -47,6 +47,9 @@ namespace MonoNanoGUIDemo
                       .WithLocalPosition (new Vector2 (15f, 50f))
                       .WithSize (new Vector2 (250f, 400f));
 
+                window.AddNewWidget<Label> ()
+                      .WithFont ("sans-bold");
+                
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Plain button")
                       .WithClickCallback ((btn) => Console.WriteLine ("Click!"))
