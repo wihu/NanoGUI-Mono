@@ -238,6 +238,17 @@ namespace MonoNanoGUI
             return ret;
         }
 
+        protected NVGcolor GetCurrTextColor ()
+        {
+            if (!this.enabled)
+            {
+                return this.theme.disabledTextColor;
+            }
+
+            NVGcolor ret = (0f < this.textColor.a) ? this.textColor : this.theme.textColor;
+            return ret;
+        }
+
         public override void Draw (NVGcontext ctx)
         {
             base.Draw (ctx);
@@ -268,7 +279,7 @@ namespace MonoNanoGUI
             NanoVG.nvgFillColor (ctx, gradTopColor);
             NanoVG.nvgFill (ctx);
 
-            if (0 < this.backgroundColor.a)
+            if (0f < this.backgroundColor.a)
             {
                 // fill background.
             }
@@ -293,29 +304,21 @@ namespace MonoNanoGUI
             NanoVG.nvgStrokeColor (ctx, style.borderDarkColor);
             NanoVG.nvgStroke (ctx);
 
-            int fontSize = 0 > this.fontSize ? style.buttonFontSize : this.fontSize;
-            NanoVG.nvgFontSize (ctx, fontSize);
+            int currFontSize = 0 > this.fontSize ? style.buttonFontSize : this.fontSize;
+            NanoVG.nvgFontSize (ctx, currFontSize);
             NanoVG.nvgFontFace (ctx, style.fontBold);
 
             float tw = NanoVG.nvgTextBounds (ctx, 0f, 0f, this.caption, null);
             Vector2 center = pos + size * 0.5f;
             Vector2 textPos = new Vector2 (center.X - tw * 0.5f, center.Y - 1f);
-            NVGcolor textColor;
-            if (this.enabled)
-            {
-                textColor = (0f == this.textColor.a) ? style.textColor : this.textColor;
-            }
-            else
-            {
-                textColor = style.disabledTextColor;
-            }
+            NVGcolor currTextColor = GetCurrTextColor ();
 
             int btnIcon = this.icon;
             if (0 != btnIcon)
             {
                 float iw, ih;
                 iw = 0f;
-                ih = fontSize;
+                ih = currFontSize;
                 if (NanoVG.nvgIsFontIcon (btnIcon))
                 {
                     ih *= 1.5f;
@@ -339,7 +342,7 @@ namespace MonoNanoGUI
                 {
                     iw += size.Y * 0.15f;
                 }
-                NanoVG.nvgFillColor (ctx, textColor);
+                NanoVG.nvgFillColor (ctx, currTextColor);
                 NanoVG.nvgTextAlign (ctx, (int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
                 Vector2 iconPos = center;
                 iconPos.Y -= 1f;
@@ -397,12 +400,12 @@ namespace MonoNanoGUI
                 //NanoVG.nvgStroke(ctx);
             }
 
-            NanoVG.nvgFontSize (ctx, fontSize);
+            NanoVG.nvgFontSize (ctx, currFontSize);
             NanoVG.nvgFontFace (ctx, style.fontBold);
             NanoVG.nvgTextAlign (ctx, (int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
             NanoVG.nvgFillColor (ctx, style.textShadowColor);
             NanoVG.nvgText (ctx, textPos.X, textPos.Y, this.caption);
-            NanoVG.nvgFillColor (ctx, textColor);
+            NanoVG.nvgFillColor (ctx, currTextColor);
             NanoVG.nvgText (ctx, textPos.X, textPos.Y + 1f, this.caption);
         }
 

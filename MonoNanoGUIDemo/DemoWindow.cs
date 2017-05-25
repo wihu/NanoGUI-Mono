@@ -98,13 +98,21 @@ namespace MonoNanoGUIDemo
                       .WithCaption ("Popup buttons")
                       .WithFont ("sans-bold");
 
-                Popup popup = new Popup (window.parent, window);
-                Vector2 anchor;
-                anchor.X = window.width + 15f;
-                anchor.Y = 0f;
-                popup.anchorPos = anchor;
-                //window.AddChild (popup);
+                PopupButton pButton = window.AddNewWidget<PopupButton> ()
+                                            .WithIcon ((int)MonoNanoGUI.Font.Entypo.ICON_EXPORT)
+                                            .WithCaption ("Popup") 
+                                            as PopupButton;
+                pButton.popup.WithLayout (new GroupLayout ());
+                pButton.popup.AddNewWidget<Label> ()
+                       .WithCaption ("Arbitrary widgets can be placed here");
 
+                PopupButton rpButton = pButton.popup.AddNewWidget<PopupButton> ()
+                                              .WithIcon ((int)MonoNanoGUI.Font.Entypo.ICON_FLASH)
+                                              .WithCaption ("Recursive popup")
+                                              as PopupButton;
+                rpButton.popup.WithLayout (new GroupLayout ());
+                rpButton.popup.AddNewWidget<Label> ()
+                        .WithCaption ("Another label");
             }
 
             screen.PerformLayout (ctx);

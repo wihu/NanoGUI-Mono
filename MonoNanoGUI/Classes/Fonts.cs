@@ -28,7 +28,19 @@ namespace MonoNanoGUI
             return ret;
         }
 
+        private static Dictionary<int, string> s_IconMap = new Dictionary<int, string> ();
         static byte[] icon = new byte[8];
+
+        public static string GetIconUTF8 (int icon)
+        {
+            string ret = string.Empty;
+            if (!s_IconMap.TryGetValue (icon, out ret))
+            {
+                ret = UnicodeToUTF8 (icon);
+                s_IconMap.Add (icon, ret);
+            }
+            return ret;
+        }
 
         /// <summary>
         /// Unicode code point to UTF8. (mysterious code)
