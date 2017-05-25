@@ -16,7 +16,7 @@ namespace MonoNanoGUI
         public Window (Widget parent, string title = "Window")
             : base (parent)
         {
-            this.title = title;   
+            this.title = title;
         }
 
         public override void Draw (NVGcontext ctx)
@@ -103,10 +103,17 @@ namespace MonoNanoGUI
             base.Draw (ctx);
         }
 
+        public bool HasTitle ()
+        {
+            return !string.IsNullOrEmpty (this.title);
+        }
+
+#region Builder Methods
         public Window WithTitle (string title)
         {
             this.title = title;
             return this;
         }
+#endregion
     }
 }

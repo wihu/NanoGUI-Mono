@@ -46,7 +46,8 @@ namespace MonoNanoGUIDemo
                 window.WithTitle ("Button demo")
                       .WithLocalPosition (new Vector2 (15f, 50f))
                       .WithSize (new Vector2 (250f, 400f))
-                      .WithLayout (new BoxLayout (Layout.Orientation.Vertical, Layout.Alignment.Middle, 10, 5));
+                      //.WithLayout (new BoxLayout (Layout.Orientation.Vertical, Layout.Alignment.Middle, 10, 5));
+                      .WithLayout (new GroupLayout ());
 
                 window.AddNewWidget<Label> ()
                       .WithCaption ("Push buttons")

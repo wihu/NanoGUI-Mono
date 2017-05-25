@@ -116,7 +116,12 @@ namespace MonoNanoGUI
             base.Load (s);
         }
 
-        #region Builder Methods
+        public bool HasCaption ()
+        {
+            return !string.IsNullOrEmpty (this.caption);
+        }
+
+#region Builder Methods
         public Label WithCaption (string caption)
         {
             this.caption = caption;

@@ -245,15 +245,25 @@ namespace MonoNanoGUI
             return this.size;
         }
 
-        public void ApplyTargetSize (NVGcontext ctx)
-        {
-            Vector2 prefSize = GetPreferredSize (ctx);
+        public Vector2 GetTargetSize (NVGcontext ctx, Vector2 preferredSize)
+        { 
             Vector2 fixedSize = this.fixedSize;
             Vector2 targetSize;
-            targetSize.X = 0f < fixedSize.X ? fixedSize.X : prefSize.X;
-            targetSize.Y = 0f < fixedSize.Y ? fixedSize.Y : prefSize.Y;
+            targetSize.X = 0f < fixedSize.X? fixedSize.X : preferredSize.X;
+            targetSize.Y = 0f < fixedSize.Y? fixedSize.Y : preferredSize.Y;
 
-            this.size = targetSize;
+            return targetSize;            
+        }
+
+        public Vector2 GetTargetSize (NVGcontext ctx)
+        {
+            Vector2 ps = GetPreferredSize (ctx);
+            return GetTargetSize (ctx, ps);
+        }
+
+        public void ApplyTargetSize (NVGcontext ctx)
+        {
+            this.size = GetTargetSize (ctx);
         }
 
         public virtual void PerformLayout (NVGcontext ctx)
