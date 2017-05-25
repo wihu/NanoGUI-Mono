@@ -99,7 +99,7 @@ namespace MonoNanoGUI
             this.isVisible = true;
         }
 
-        public int GetPreferredFontSize ()
+        public virtual int GetPreferredFontSize ()
         {
             // put override font size in higher priority?
             int ret = this.fontSize;

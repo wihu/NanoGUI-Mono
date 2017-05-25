@@ -93,6 +93,7 @@ namespace MonoNanoGUI
             this.pushed = false;
             this.fontSize = -1;
             this.icon = icon;
+            this.iconAnchorType = IconAnchorType.LeftCentered;
         }
 
         public bool HasFlag (Flags flag)
@@ -193,10 +194,50 @@ namespace MonoNanoGUI
             return false;
         }
 
+        public override int GetPreferredFontSize ()
+        {
+            // put override font size in higher priority?
+            int ret = 0 <= this.fontSize ? this.fontSize : this.theme.buttonFontSize;
+            return ret;
+        }
+
         public override Vector2 GetPreferredSize (NVGcontext ctx)
         {
-            return Vector2.Zero;
+            Vector2 ret;
+
+            int prefFontSize = GetPreferredFontSize ();
+            NanoVG.nvgFontSize (ctx, prefFontSize);
+            NanoVG.nvgFontFace (ctx, this.theme.fontBold);
+            float tw = NanoVG.nvgTextBounds (ctx, 0f, 0f, this.caption, null);
+            float iw = 0f;
+            float ih = prefFontSize;
+
+            int btnIcon = this.icon;
+
+            if (0 < btnIcon)
+            {
+                if (NanoVG.nvgIsFontIcon (btnIcon))
+                {
+                    ih *= 1.5f;
+                    NanoVG.nvgFontFace (ctx, this.theme.fontIcons);
+                    NanoVG.nvgFontSize (ctx, ih);
+                    iw = NanoVG.nvgTextBounds (ctx, 0f, 0f, m_IconUTF8, null) + this.size.Y * 0.15f;
+                }
+                else
+                {
+                    int w, h;
+                    w = h = 1;
+                    ih *= 0.9f;
+                    NanoVG.nvgImageSize (ctx, btnIcon, ref w, ref h);
+                    iw = w * ih / h;
+                }
+            }
+            ret.X = (int)(tw + iw) + 20;
+            ret.Y = prefFontSize + 10;
+
+            return ret;
         }
+
         public override void Draw (NVGcontext ctx)
         {
             base.Draw (ctx);
@@ -365,7 +406,17 @@ namespace MonoNanoGUI
             NanoVG.nvgText (ctx, textPos.X, textPos.Y + 1f, this.caption);
         }
 
-#region Builder Methods
+        #region Helper Methods
+        public static Button MakeToolButton (int icon)
+        {
+            Button button = new Button (null, "", icon);
+            button.flags = (Flags.RadioButton | Flags.ToggleButton);
+            button.fixedSize = new Vector2 (25, 25);
+            return button;
+        }
+        #endregion
+
+        #region Builder Methods
         public Button WithCaption (string caption)
         {
             this.caption = caption;
@@ -404,6 +455,6 @@ namespace MonoNanoGUI
             this.iconAnchorType = anchorType;
             return this;
         }
-#endregion
+        #endregion
     }
 }

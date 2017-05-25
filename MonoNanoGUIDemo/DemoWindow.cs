@@ -46,31 +46,55 @@ namespace MonoNanoGUIDemo
                 window.WithTitle ("Button demo")
                       .WithLocalPosition (new Vector2 (15f, 50f))
                       .WithSize (new Vector2 (250f, 400f))
-                      //.WithLayout (new BoxLayout (Layout.Orientation.Vertical, Layout.Alignment.Middle, 10, 5));
                       .WithLayout (new GroupLayout ());
 
+                // -- Push buttons
                 window.AddNewWidget<Label> ()
                       .WithCaption ("Push buttons")
                       .WithFont ("sans-bold");
 
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Plain button")
-                      .WithClickCallback ((btn) => Console.WriteLine ("Click!"))
-                      .WithFixedSize (new Vector2 (200f, 40f));
+                      .WithClickCallback ((btn) => Console.WriteLine ("Click!"));
 
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Styled")
-                      .WithIcon ((int)Font.Entypo.ICON_LOGIN, Button.IconAnchorType.LeftCentered)
-                      .WithFixedSize (new Vector2 (200f, 40f));
+                      .WithIcon ((int)Font.Entypo.ICON_LOGIN, Button.IconAnchorType.LeftCentered);
 
+                // -- Toggle buttons
                 window.AddNewWidget<Label> ()
                       .WithCaption ("Toggle buttons")
                       .WithFont ("sans-bold");
 
                 window.AddNewWidget<Button> ()
                       .WithFlags (Button.Flags.ToggleButton)
-                      .WithCaption ("Toggle me")
-                      .WithFixedSize (new Vector2 (200f, 40f)); // TODO: broken without fixed size? set default size?
+                      .WithCaption ("Toggle me");
+
+                // -- Radio buttons
+                window.AddNewWidget<Label> ()
+                      .WithCaption ("Radio buttons")
+                      .WithFont ("sans-bold");
+
+                window.AddNewWidget<Button> ()
+                      .WithCaption ("Radio button 1")
+                      .WithFlags (Button.Flags.RadioButton);
+
+                window.AddNewWidget<Button> ()
+                      .WithCaption ("Radio button 2")
+                      .WithFlags (Button.Flags.RadioButton);
+                
+                // -- Tool buttons palette
+                window.AddNewWidget<Label> ()
+                      .WithCaption ("A tool palette")
+                      .WithFont ("sans-bold");
+
+                Widget tools = window.AddNewWidget<Widget> ()
+                                     .WithLayout (new BoxLayout (Layout.Orientation.Horizontal, Layout.Alignment.Middle, 0, 6));
+                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_CLOUD));
+                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_FF));
+                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_COMPASS));
+                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_INSTALL));
+
             }
 
             screen.PerformLayout (ctx);
