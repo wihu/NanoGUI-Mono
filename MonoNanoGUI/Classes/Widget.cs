@@ -148,6 +148,21 @@ namespace MonoNanoGUI
             return ret;
         }
 
+        public Window GetParentWindow ()
+        {
+            Widget widget = this;
+            while (widget)
+            {
+                Window window = widget as Window;
+                if (window)
+                {
+                    return window;
+                }
+                widget = widget.parent;
+            }
+            return null;
+        }
+
         public void RequestFocus ()
         {
         }
@@ -282,10 +297,9 @@ namespace MonoNanoGUI
                 child.PerformLayout (ctx);
             }
         }
-        public virtual void Draw (NVGcontext ctx)
-        {
-            // TODO: draw debug bounds.
 
+        protected void DrawChildren (NVGcontext ctx)
+        {
             int childCount = m_Children.Count;
             if (0 == childCount)
             {
@@ -303,6 +317,13 @@ namespace MonoNanoGUI
                 }
             }
             NanoVG.nvgTranslate (ctx, -pos.X, -pos.Y);
+        }
+
+        public virtual void Draw (NVGcontext ctx)
+        {
+            // TODO: draw debug bounds.
+
+            DrawChildren (ctx);
         }
 
         public virtual void Save (Serializer s)

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MonoNanoGUIDemo
+namespace MonoNanoGUI
 {
     public static class Font
     {

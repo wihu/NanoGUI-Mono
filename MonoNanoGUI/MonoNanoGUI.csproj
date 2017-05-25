@@ -62,6 +62,9 @@
     <Compile Include="Classes\Layout\BoxLayout.cs" />
     <Compile Include="Classes\Layout\GridLayout.cs" />
     <Compile Include="Classes\Layout\GroupLayout.cs" />
+    <Compile Include="Classes\PopupButton.cs" />
+    <Compile Include="Classes\Popup.cs" />
+    <Compile Include="Classes\Font.Entypo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Math\" />

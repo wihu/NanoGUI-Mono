@@ -15,12 +15,10 @@ namespace MonoNanoGUIDemo
         Widget screen;
 
         // NOTE: Only works with Compiler x64, NativeWindow runs but freezes on x86.
-        public DemoWindow (int width, int height)
+        public DemoWindow (int width, int height, GraphicsMode gm)
             //: base (width, height, GraphicsMode.Default, "MonoNanoGUI Demo Window", GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
-            : base (width, height, GraphicsMode.Default, "MonoNanoGUI Demo Window")
+            : base (width, height, gm, "MonoNanoGUI Demo Window")
         {
-
-
         }
 
         protected override void OnLoad (EventArgs e)
@@ -59,7 +57,7 @@ namespace MonoNanoGUIDemo
 
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Styled")
-                      .WithIcon ((int)Font.Entypo.ICON_LOGIN, Button.IconAnchorType.LeftCentered);
+                      .WithIcon ((int)MonoNanoGUI.Font.Entypo.ICON_LOGIN, Button.IconAnchorType.LeftCentered);
 
                 // -- Toggle buttons
                 window.AddNewWidget<Label> ()
@@ -90,10 +88,22 @@ namespace MonoNanoGUIDemo
 
                 Widget tools = window.AddNewWidget<Widget> ()
                                      .WithLayout (new BoxLayout (Layout.Orientation.Horizontal, Layout.Alignment.Middle, 0, 6));
-                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_CLOUD));
-                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_FF));
-                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_COMPASS));
-                tools.AddChild (Button.MakeToolButton ((int)Font.Entypo.ICON_INSTALL));
+                tools.AddChild (Button.MakeToolButton ((int)MonoNanoGUI.Font.Entypo.ICON_CLOUD));
+                tools.AddChild (Button.MakeToolButton ((int)MonoNanoGUI.Font.Entypo.ICON_FF));
+                tools.AddChild (Button.MakeToolButton ((int)MonoNanoGUI.Font.Entypo.ICON_COMPASS));
+                tools.AddChild (Button.MakeToolButton ((int)MonoNanoGUI.Font.Entypo.ICON_INSTALL));
+
+                // -- Popup buttons
+                window.AddNewWidget<Label> ()
+                      .WithCaption ("Popup buttons")
+                      .WithFont ("sans-bold");
+
+                Popup popup = new Popup (window.parent, window);
+                Vector2 anchor;
+                anchor.X = window.width + 15f;
+                anchor.Y = 0f;
+                popup.anchorPos = anchor;
+                //window.AddChild (popup);
 
             }
 
