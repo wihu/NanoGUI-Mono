@@ -2437,8 +2437,8 @@ namespace NanoVGDotNet
 			FontStash.fonsSetBlur(ref ctx.fs, state.fontBlur * scale);
 			FontStash.fonsSetAlign(ctx.fs, (FONSalign)state.textAlign);
 			FontStash.fonsSetFont(ref ctx.fs, state.fontId);
-
-			FontStash.fonsTextIterInit(ctx.fs, ref iter, x * scale, y * scale, string_);
+            byte[] str = System.Text.Encoding.UTF8.GetBytes (string_);
+            FontStash.fonsTextIterInit(ctx.fs, ref iter, x * scale, y * scale, str);
 			prevIter = iter;
 			while (FontStash.fonsTextIterNext(ctx.fs, ref iter, ref q) != 0)
 			{
@@ -2587,7 +2587,13 @@ namespace NanoVGDotNet
 			}
 		}
 
-		public static float nvgTextBounds(NVGcontext ctx, float x, float y, string string_, float[] bounds)
+        public static float nvgTextBounds (NVGcontext ctx, float x, float y, string string_, float[] bounds)
+        {
+            byte[] str = System.Text.Encoding.UTF8.GetBytes (string_);
+            return nvgTextBounds (ctx, x, y, str, bounds);
+        }
+
+		public static float nvgTextBounds(NVGcontext ctx, float x, float y, byte[] str, float[] bounds)
 		{
 			NVGstate state = nvg__getState(ctx);
 			float scale = nvg__getFontScale(state) * ctx.devicePxRatio;
@@ -2603,7 +2609,7 @@ namespace NanoVGDotNet
 			FontStash.fonsSetAlign(ctx.fs, (FONSalign)state.textAlign);
 			FontStash.fonsSetFont(ref ctx.fs, state.fontId);
 
-			width = FontStash.fonsTextBounds(ref ctx.fs, x * scale, y * scale, string_, bounds);
+            width = FontStash.fonsTextBounds(ref ctx.fs, x * scale, y * scale, str, bounds);
 			if (bounds != null)
 			{
 				// Use line bounds for height.
@@ -2677,8 +2683,8 @@ namespace NanoVGDotNet
 			FontStash.fonsSetFont(ref ctx.fs, state.fontId);
 
 			breakRowWidth *= scale;
-
-			FontStash.fonsTextIterInit(ctx.fs, ref iter, 0, 0, string_);
+            byte[] str = System.Text.Encoding.UTF8.GetBytes (string_);
+            FontStash.fonsTextIterInit(ctx.fs, ref iter, 0, 0, str);
 			prevIter = iter;
 			while (FontStash.fonsTextIterNext(ctx.fs, ref iter, ref q) != 0)
 			{
@@ -2938,7 +2944,13 @@ namespace NanoVGDotNet
 			return 1;
 		}
 
-		public static float nvgText(NVGcontext ctx, float x, float y, string string_)
+        public static float nvgText (NVGcontext ctx, float x, float y, string string_)
+        {
+            byte[] str = System.Text.Encoding.UTF8.GetBytes (string_);
+            return nvgText (ctx, x, y, str);
+        }
+
+		public static float nvgText(NVGcontext ctx, float x, float y, byte[] str)
 		{
 			NVGstate state = nvg__getState(ctx);
 			FONStextIter iter = new FONStextIter(), prevIter = new FONStextIter();
@@ -2949,7 +2961,8 @@ namespace NanoVGDotNet
 			int cverts = 0;
 			int nverts = 0;
 
-			int end = string_.Length;
+			//int end = string_.Length;
+            int end = str.Length;
 
 			if (state.fontId == FontStash.FONS_INVALID)
 				return x;
@@ -2964,8 +2977,8 @@ namespace NanoVGDotNet
 			verts = nvg__allocTempVerts(ctx, cverts);
 			if (verts == null)
 				return x;
-
-			FontStash.fonsTextIterInit(ctx.fs, ref iter, x * scale, y * scale, string_);
+            
+            FontStash.fonsTextIterInit(ctx.fs, ref iter, x * scale, y * scale, str);
 			prevIter = iter;
 			while (FontStash.fonsTextIterNext(ctx.fs, ref iter, ref q) != 0)
 			{

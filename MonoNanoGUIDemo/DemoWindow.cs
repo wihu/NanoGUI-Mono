@@ -57,7 +57,7 @@ namespace MonoNanoGUIDemo
 
                 window.AddNewWidget<Button> ()
                       .WithCaption ("Styled")
-                      .WithIcon ((int)MonoNanoGUI.Font.Entypo.ICON_LOGIN, Button.IconAnchorType.LeftCentered);
+                      .WithIcon ((int)MonoNanoGUI.Font.Entypo.ICON_ROCKET, Button.IconAnchorType.LeftCentered);
 
                 // -- Toggle buttons
                 window.AddNewWidget<Label> ()

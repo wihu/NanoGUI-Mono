@@ -250,7 +250,7 @@ namespace FontStashDotNet
 
 		public static float fonsDrawText(ref FONScontext stash,
 		                                 float x, float y,
-		                                 string str)
+		                                 byte[] str)
 		{
 			FONSstate state;
 			fons__getState(stash, out state);
@@ -379,7 +379,7 @@ namespace FontStashDotNet
 
 		public static float fonsTextBounds(ref FONScontext stash,
 		                                   float x, float y,
-		                                   string str,
+		                                   byte[] str,
 		                                   float[] bounds)
 		{
 			FONSstate state;
@@ -412,18 +412,19 @@ namespace FontStashDotNet
 			miny = maxy = y;
 			startx = x;
 
-			//if (end == null)
-			//	end = str + str.Length;
+            //if (end == null)
+            //	end = str + str.Length;
 
-			foreach (char c in str)
+            //foreach (char c in str)
+            for (int i = 0; str.Length > i; ++i)
 			{
-				byte[] bytes = Encoding.UTF8.GetBytes(c.ToString());
-				/*
-				if (fons__decutf8(ref utf8state, ref codepoint, bytes[0]) != 0)
+				//byte[] bytes = Encoding.UTF8.GetBytes(c.ToString());
+				
+				//if (fons__decutf8(ref utf8state, ref codepoint, bytes[0]) != 0)
+				//	continue;
+				if (fons__decutf8(ref utf8state, ref codepoint, (uint)str[i]) > 0)
 					continue;
-				if (fons__decutf8(ref utf8state, ref codepoint, (uint)c) > 0)
-					continue;*/
-				codepoint = (uint)c;
+				//codepoint = (uint)c;
 
 				glyph = fons__getGlyph(stash, font, codepoint, isize, iblur);
 				if (glyph != null)
@@ -559,7 +560,7 @@ namespace FontStashDotNet
 		}
 
 		public static int fonsTextIterInit(FONScontext stash, ref FONStextIter iter,
-		                                   float x, float y, string str)
+		                                   float x, float y, byte[] str)
 		{
 			FONSstate state;
 			fons__getState(stash, out state);
@@ -623,25 +624,27 @@ namespace FontStashDotNet
 			
 			iter.iStr = iter.iNext;
 
-			for (cont = iter.iNext; cont < iter.str.Length; cont++)
+            for (cont = iter.iNext; cont < iter.str.Length; cont++)
 			{
+                if (fons__decutf8 (ref iter.utf8state, ref iter.codepoint, (uint)iter.str[cont]) != 0)
+                    continue;
 				//if (fons__decutf8(ref iter.utf8state, ref iter.codepoint, (byte)iter.str[cont]) != 0)
 				//	continue;
 				//byte[] bytes = Encoding.UTF8.GetBytes(iter.str[cont].ToString());
 				//if (bytes.Length > 1)
 				//	continue;
 				//else
-					iter.codepoint = (uint)iter.str[cont];
+				//	iter.codepoint = (uint)iter.str[cont];
 
 				// TODO
-				if (iter.codepoint == 55357)
-				{
-					//uint cp1 = (uint)iter.str[1];
-					iter.codepoint = 128269;
-				}
+				//if (iter.codepoint == 55357)
+				//{
+				//	//uint cp1 = (uint)iter.str[1];
+				//	iter.codepoint = 128269;
+				//}
 
-				if (iter.codepoint == 0)
-					continue;
+				//if (iter.codepoint == 0)
+				//	continue;
 				//str++;
 				// Get glyph and quad
 				iter.x = iter.nextx;
@@ -1548,7 +1551,7 @@ namespace FontStashDotNet
 		public short isize, iblur;
 		public FONSfont font;
 		public int prevGlyphIndex;
-		public string str;
+		public byte[] str;
 		public int iStr;
 		public int iNext;
 		public char end;

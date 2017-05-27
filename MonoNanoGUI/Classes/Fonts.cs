@@ -28,16 +28,16 @@ namespace MonoNanoGUI
             return ret;
         }
 
-        private static Dictionary<int, string> s_IconMap = new Dictionary<int, string> ();
-        static byte[] icon = new byte[8];
-
-        public static string GetIconUTF8 (int icon)
+        private static Dictionary<int, byte[]> s_IconMap = new Dictionary<int, byte[]> ();
+        static readonly byte[] icon = new byte[8];
+        
+        public static byte[] GetIconUTF8 (int iconId)
         {
-            string ret = string.Empty;
-            if (!s_IconMap.TryGetValue (icon, out ret))
+            byte[] ret = null;
+            if (!s_IconMap.TryGetValue (iconId, out ret))
             {
-                ret = UnicodeToUTF8 (icon);
-                s_IconMap.Add (icon, ret);
+                ret = UnicodeToUTF8 (iconId);
+                s_IconMap.Add (iconId, ret);
             }
             return ret;
         }
@@ -47,7 +47,7 @@ namespace MonoNanoGUI
         /// </summary>
         /// <returns>UTF8 string of the unicode.</returns>
         /// <param name="cp">code point.</param>
-        public static string UnicodeToUTF8 (int cp)
+        private static byte[] UnicodeToUTF8 (int cp)
         {
         	int n = 0;
         	if (cp < 0x80)
@@ -100,16 +100,20 @@ namespace MonoNanoGUI
             	icon[1] = (byte)(0x80 | (cp & 0x3f));
             	cp = cp >> 6;
             	cp |= 0xc0;
-            case_1:
-            	icon[0] = (byte)cp;
+        case_1:
+            icon[0] = (byte)cp;
 
-            end:
+        end:
 
-            	string r = new string (Encoding.UTF8.GetChars (icon, 0, n));
-            	r = r.Trim (new char[] { '\0' });
-            	int rl = r.Length;
+            //string r = new string (Encoding.UTF8.GetChars (icon, 0, n));
+            //r = r.Trim (new char[] { '\0' });
+            //int rl = r.Length;
+            //string r = Encoding.UTF8.GetString (icon, 0, n);
 
-	        return r;
+            //return r;
+            byte[] ret = new byte[n];
+            Array.Copy (icon, ret, n);
+            return ret;
         }
     }
 }

@@ -31,32 +31,14 @@ namespace MonoNanoGUI
         }
 
         protected bool m_Pushed;
-        protected int m_Icon;
         protected List<Button> m_ButtonGroup = new List<Button> ();
 
-        private string m_IconUTF8 = string.Empty;
-
         public string caption { get; set; }
+        public int icon { get; set; }
         public IconAnchorType iconAnchorType { get; set; }
         public Flags flags { get; set; }
         public NVGcolor backgroundColor { get; set; }
         public NVGcolor textColor { get; set; }
-
-        public int icon 
-        { 
-            get
-            {
-                return m_Icon;
-            }
-            set
-            {
-                if (value != m_Icon)
-                {
-                    m_IconUTF8 = Fonts.UnicodeToUTF8 (value);
-                }
-                m_Icon = value;
-            }
-        }
 
         public bool pushed
         {
@@ -218,10 +200,11 @@ namespace MonoNanoGUI
             {
                 if (NanoVG.nvgIsFontIcon (btnIcon))
                 {
+                    byte[] icon = Fonts.GetIconUTF8 (btnIcon);
                     ih *= 1.5f;
                     NanoVG.nvgFontFace (ctx, this.theme.fontIcons);
                     NanoVG.nvgFontSize (ctx, ih);
-                    iw = NanoVG.nvgTextBounds (ctx, 0f, 0f, m_IconUTF8, null) + this.size.Y * 0.15f;
+                    iw = NanoVG.nvgTextBounds (ctx, 0f, 0f, icon, null) + this.size.Y * 0.15f;
                 }
                 else
                 {
@@ -319,12 +302,13 @@ namespace MonoNanoGUI
                 float iw, ih;
                 iw = 0f;
                 ih = currFontSize;
+                byte[] icon = Fonts.GetIconUTF8 (btnIcon);
                 if (NanoVG.nvgIsFontIcon (btnIcon))
                 {
                     ih *= 1.5f;
                     NanoVG.nvgFontSize (ctx, ih);
                     NanoVG.nvgFontFace (ctx, style.fontIcons);
-                    iw = NanoVG.nvgTextBounds (ctx, 0, 0, m_IconUTF8, null);
+                    iw = NanoVG.nvgTextBounds (ctx, 0, 0, icon, null);
                 }
                 else
                 {
@@ -379,7 +363,7 @@ namespace MonoNanoGUI
                 {
                     // NOTE: icon rendering bug, any unicode > 0x10000 not being rendered correctly.
                     //       e.g. 0x1F680 (Font.Entypo.ICON_ROCKET).
-                    NanoVG.nvgText (ctx, iconPos.X, iconPos.Y + 1f, m_IconUTF8);
+                    NanoVG.nvgText (ctx, iconPos.X, iconPos.Y + 1f, icon);
                 }
                 else
                 {

@@ -95,7 +95,7 @@ namespace MonoNanoGUI
             if (0 != this.chevronIcon)
             {
                 Theme style = this.theme;
-                string iconStr = Fonts.GetIconUTF8 (this.chevronIcon);
+                byte[] icon = Fonts.GetIconUTF8 (this.chevronIcon);
                 NVGcolor currTextColor = GetCurrTextColor ();
                 int currFontSize = (0 <= this.fontSize) ? this.fontSize : style.buttonFontSize;
                 int fontFace = Fonts.Get (style.fontIcons);
@@ -105,11 +105,11 @@ namespace MonoNanoGUI
                 NanoVG.nvgFillColor (ctx, currTextColor);
                 NanoVG.nvgTextAlign (ctx, (int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
 
-                float iw = NanoVG.nvgTextBounds (ctx, 0f, 0f, iconStr, null);
+                float iw = NanoVG.nvgTextBounds (ctx, 0f, 0f, icon, null);
                 Vector2 iconPos = this.localPosition;
                 iconPos.X += this.size.X - iw - 8;
                 iconPos.Y += this.size.Y * 0.5f - 1;
-                NanoVG.nvgText (ctx, iconPos.X, iconPos.Y, iconStr);
+                NanoVG.nvgText (ctx, iconPos.X, iconPos.Y, icon);
             }
         }
 
