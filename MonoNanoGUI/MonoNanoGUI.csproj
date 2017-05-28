@@ -65,6 +65,7 @@
     <Compile Include="Classes\PopupButton.cs" />
     <Compile Include="Classes\Popup.cs" />
     <Compile Include="Classes\Font.Entypo.cs" />
+    <Compile Include="Classes\CheckBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Math\" />

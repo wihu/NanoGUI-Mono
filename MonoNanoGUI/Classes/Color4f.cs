@@ -57,6 +57,12 @@ namespace MonoNanoGUI
             return new Color4f (intensity, 1f);
         }
 
+        public Color4f WithAlpha (int alpha)
+        {
+            this.v.W = alpha / 255f;
+            return this;
+        }
+
         public NVGcolor ToNVGColor ()
         {
             NVGcolor ret;

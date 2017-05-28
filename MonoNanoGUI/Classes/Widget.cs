@@ -13,7 +13,6 @@ namespace MonoNanoGUI
         protected Vector2 m_LocalPos;
         protected Vector2 m_Size;
         protected Vector2 m_FixedSize;
-        protected bool m_MouseFocus;
         protected string m_Tooltip;
         protected CursorType m_CursorType;
         protected List<Widget> m_Children = new List<Widget> ();
@@ -23,6 +22,7 @@ namespace MonoNanoGUI
         public int instanceId { get; set; }
         public bool enabled { get; set; }
         public bool focused { get; set; }
+        public bool mouseFocus { get; private set; }
         public string tooltipText { get; set; }
         public int fontSize { get; set; }
         public bool hasFontSize { get { return (0 < this.fontSize); } }
@@ -90,13 +90,18 @@ namespace MonoNanoGUI
 
         public Widget (Widget parent)
         {
+            this.enabled = true;
+            this.isVisible = true;
+            this.fontSize = -1;
+            this.focused = false;
+            this.mouseFocus = false;
+            this.tooltipText = string.Empty;
+            this.cursor = Cursor.Arrow;
+
             if (parent)
             {
                 parent.AddChild (this);
             }
-
-            this.enabled = true;
-            this.isVisible = true;
         }
 
         public virtual int GetPreferredFontSize ()

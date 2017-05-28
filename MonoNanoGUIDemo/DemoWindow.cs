@@ -105,14 +105,16 @@ namespace MonoNanoGUIDemo
                 pButton.popup.WithLayout (new GroupLayout ());
                 pButton.popup.AddNewWidget<Label> ()
                        .WithCaption ("Arbitrary widgets can be placed here");
+                pButton.popup.AddNewWidget<CheckBox> ()
+                       .WithCaption ("A check box");
 
                 PopupButton rpButton = pButton.popup.AddNewWidget<PopupButton> ()
                                               .WithIcon ((int)MonoNanoGUI.Font.Entypo.ICON_FLASH)
                                               .WithCaption ("Recursive popup")
                                               as PopupButton;
                 rpButton.popup.WithLayout (new GroupLayout ());
-                rpButton.popup.AddNewWidget<Label> ()
-                        .WithCaption ("Another label");
+                rpButton.popup.AddNewWidget<CheckBox> ()
+                        .WithCaption ("Another check box");
             }
 
             screen.PerformLayout (ctx);
@@ -163,7 +165,6 @@ namespace MonoNanoGUIDemo
             Vector2 p = new Vector2 (e.Mouse.X, e.Mouse.Y);
             if (screen && screen.ContainsPoint (p))
             {
-                //Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
                 screen.HandleMouseButtonEvent (p, (int)e.Button, e.IsPressed, 0);
             }
         }
@@ -174,7 +175,6 @@ namespace MonoNanoGUIDemo
 
             if (screen)
             {
-                //Console.WriteLine (e.Mouse.X + ", " + e.Mouse.Y);
                 Vector2 p = new Vector2 (e.Mouse.X, e.Mouse.Y);
                 screen.HandleMouseButtonEvent (p, 0, e.IsPressed, 0);
             }

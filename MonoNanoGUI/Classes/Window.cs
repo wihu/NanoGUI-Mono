@@ -32,7 +32,7 @@ namespace MonoNanoGUI
             NanoVG.nvgSave (ctx);
             NanoVG.nvgBeginPath (ctx);
             NanoVG.nvgRoundedRect (ctx, pos.X, pos.Y, size.X, size.Y, cr);
-            NanoVG.nvgFillColor (ctx, m_MouseFocus ? style.windowFillFocusedColor
+            NanoVG.nvgFillColor (ctx, this.mouseFocus ? style.windowFillFocusedColor
                                  : style.windowFillUnfocusedColor);
 
             NanoVG.nvgFill (ctx);
